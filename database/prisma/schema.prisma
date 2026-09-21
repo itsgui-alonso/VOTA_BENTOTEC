@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Vote {
+  id         String   @id @default(uuid())
+  userId     String
+  projectId  String
+  created_at DateTime @default(now())
+  categoryId String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, projectId])
+}
+
+model Session {
+  id         String    @id @default(uuid())
+  userId     String
+  token      String    @unique
+  expires_at DateTime
+  create_at  DateTime? @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model categoria {
+  id             Int        @id
+  nome_categoria String     @db.VarChar(30)
+  projetos       projetos[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model integrantes {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projeto_id String   @db.Uuid
+  nome       String
+  serie      String
+  curso      String?
+  projetos   projetos @relation(fields: [projeto_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model projetos {
+  id                    String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome_completo_projeto String
+  nome_projeto          String
+  descricao             String?
+  imagem_url            String?
+  palavras_chave        String
+  categoria_id          Int?
+  created_at            DateTime?     @default(now()) @db.Timestamp(6)
+  numero_projeto        Int?
+  stand_projeto         String?       @db.VarChar(20)
+  escola                String        @default("Não informado")
+  orientador            String?
+  co_orientador         String?
+  integrantes           integrantes[]
+  categoria             categoria?    @relation(fields: [categoria_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id            String    @id @default(uuid())
+  qr_code       String    @unique
+  nome          String?
+  cpf           String?   @unique
+  email         String?
+  telefone      String?
+  tipoVisitante String?
+  origem        String?
+  status        String?
+  created_at    DateTime  @default(now())
+  sessions      Session[]
+  votes         Vote[]
+}

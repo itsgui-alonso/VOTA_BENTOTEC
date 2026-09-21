@@ -1,0 +1,21 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente (nunca sobem pro repositório)
+.env
+.env.local
+.env.*.local
+
+# Saída do Prisma Client, se gerado em pasta customizada
+/generated/prisma
+
+# Arquivos de build
+dist/
+
+# Logs e arquivos do sistema operacional
+npm-debug.log*
+.DS_Store
+
+# RefatorizaçãoBD
+
+refatoraçãoBanco.sql
