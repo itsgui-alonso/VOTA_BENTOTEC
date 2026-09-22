@@ -1,5 +1,5 @@
 export class IntegrantesPr {
-    constructor(id, projeto_id, nome, serie, curso){
+    constructor({id, projeto_id, nome, serie, curso}){
         this.id = id,
         this.projeto_id = projeto_id,
         this.nome = nome,

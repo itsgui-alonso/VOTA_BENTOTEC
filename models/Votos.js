@@ -1,5 +1,5 @@
 export class Votos{
-    constructor(id, userId, projectId, categoryId, create_at){
+    constructor({id, userId, projectId, categoryId, create_at}){
         this.id = id,
         this.userId = userId,
         this.projectId = projectId,

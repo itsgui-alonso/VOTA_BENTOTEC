@@ -1,5 +1,5 @@
 export class Categoria {
-    constructor(id, nome_categoria){
+    constructor({id, nome_categoria}){
         this._id = id,
         this.nome_categoria = nome_categoria
     }

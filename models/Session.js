@@ -1,5 +1,5 @@
 export class Session{
-    constructor(id, userId, token, create_at, expires_at){
+    constructor({id, userId, token, create_at, expires_at}){
         this.id = id,
         this.userId = userId,
         this.token = token,

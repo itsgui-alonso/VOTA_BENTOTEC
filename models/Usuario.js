@@ -1,5 +1,5 @@
 export class Usuario{
-    constructor(id, qr_code, create_at, nome, cpf, email, telefone, tipoVisitante, origem, status){
+    constructor({id, qr_code, create_at, nome, cpf, email, telefone, tipoVisitante, origem, status}){
         this._id = id
         this.qr_code = qr_code
         this.create_at = create_at
