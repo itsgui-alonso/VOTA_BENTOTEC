@@ -23,4 +23,16 @@ export class Usuario{
     get createAtUsuario(){
         return this.createAt
     }
+
+    get nomeUsuario(){
+        return this.nome
+    }
+
+    get usuarioCpf(){
+        return this.cpf
+    }
+
+    get usuarioStatus(){
+        return this.status
+    }
 }
