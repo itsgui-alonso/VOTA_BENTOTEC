@@ -6,16 +6,16 @@ import crypto  from "crypto"
 export class SessionService{
 
     static async CriarSession(qrCodeEscaneado){
-        // Olha se existe o qrcode sacneado
-        const pulseiraUser = await UserRepository.verificarQrCode(qrCodeEscaneado)
+        // Olha se existe o qrcode sacaneado
+        const crachaUser = await UserRepository.verificarQrCode(qrCodeEscaneado)
 
-        if(!pulseiraUser){
+        if(!crachaUser){
             throw new Error('Usuario não existe! QrCode invalido!')
         }
 
         // Olha se a session esta ativa, se sim deleta 
 
-        const sessionAtiva = await SessionRepository.buscarSessionPorId(pulseiraUser.idUsuario)
+        const sessionAtiva = await SessionRepository.buscarSessionPorId(crachaUser.idUsuario)
 
         if(sessionAtiva){
             await SessionRepository.deletarSession(sessionAtiva.tokenSession)
@@ -33,7 +33,7 @@ export class SessionService{
 
         const session = new Session(
             null, 
-            pulseiraUser.idUsuario,
+            crachaUser.idUsuario,
             tokenCriado,
             new Date(),
             expiresAt 
