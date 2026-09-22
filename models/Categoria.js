@@ -1,14 +1,14 @@
 export class Categoria {
-    constructor(id, name){
+    constructor(id, nome_categoria){
         this._id = id,
-        this._name = name
+        this.nome_categoria = nome_categoria
     }
 
     get idCategoria(){
         return this._id
     }
 
-    get nameCategoria(){
-        return this._name
+    get nomeCategoria(){
+        return this.nome_categoria
     }
 }
