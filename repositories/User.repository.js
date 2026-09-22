@@ -15,18 +15,7 @@ export class UserRepository {
             return null;
         }
 
-        return new Usuario(
-            qrCode.id,
-            qrCode.qr_code,
-            qrCode.created_at,
-            qrCode.nome,
-            qrCode.cpf,
-            qrCode.email,
-            qrCode.telefone,
-            qrCode.tipoVisitante,
-            qrCode.origem,
-            qrCode.status
-        );
+        return new Usuario(qrCode)
     }
 
     static async upsertPorQrCode(dados) {
@@ -57,18 +46,22 @@ export class UserRepository {
             },
         });
 
-        return new Usuario(
-            data.id,
-            data.qr_code,
-            data.created_at,
-            data.nome,
-            data.cpf,
-            data.email,
-            data.telefone,
-            data.tipoVisitante,
-            data.origem,
-            data.status
-        );
+        return new Usuario(data)
+    }
+
+    static async verificarStatus(statusUsuario, idUsuario){
+        const usuario = await prisma.user.findFirst({
+            where:{
+                id: idUsuario,
+                status: statusUsuario
+            }
+        })
+
+        if(!usuario){
+            return null
+        }
+
+        return new Usuario(usuario)
     }
 }
 
