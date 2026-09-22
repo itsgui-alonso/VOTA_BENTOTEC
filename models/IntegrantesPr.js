@@ -1,10 +1,10 @@
 export class IntegrantesPr {
-    constructor(id, projeto_id_integrante, nome_integrante, serie_integrante, curso_integrante){
+    constructor(id, projeto_id, nome, serie, curso){
         this.id = id,
-        this.projeto_id_integrante = projeto_id_integrante,
-        this.nome_integrante = nome_integrante,
-        this.serie_integrante = serie_integrante,
-        this.curso_integrante = curso_integrante
+        this.projeto_id = projeto_id,
+        this.nome = nome,
+        this.serie = serie,
+        this.curso = curso
     }
 
     get idIntegrante(){
@@ -12,10 +12,10 @@ export class IntegrantesPr {
     }
 
     get idProjetoIntegrante(){
-        return this.projeto_id_integrante
+        return this.projeto_id
     }
 
     get nomeIntegrante(){
-        return this.nome_integrante
+        return this.nome
     }
 }

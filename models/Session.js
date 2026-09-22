@@ -1,30 +1,30 @@
 export class Session{
-    constructor(id, userId, token, _create_at, expires_at){
-        this._id = id,
-        this._userId = userId,
-        this._token = token,
-        this._create_at = _create_at,
-        this._expires_at = expires_at
+    constructor(id, userId, token, create_at, expires_at){
+        this.id = id,
+        this.userId = userId,
+        this.token = token,
+        this.create_at = create_at,
+        this.expires_at = expires_at
     }
 
     get idSession(){
-        return this._id
+        return this.id
     }
 
     get userIdSession(){
-        return this._userId
+        return this.userId
     }
 
     get tokenSession(){
-        return this._token
+        return this.token
     }
 
     get create_atSession(){
-        return this._create_at
+        return this.create_at
     }
 
     get expires_atSession(){
-        return this._expires_at
+        return this.expires_at
     }
 
 

@@ -1,29 +1,29 @@
 export class Votos{
-    constructor(id, userId, projectId, categoryId, createAt){
-        this._id = id,
-        this._userId = userId,
-        this._projectId = projectId,
-        this._categoryId = categoryId
-        this._create_at = createAt
+    constructor(id, userId, projectId, categoryId, create_at){
+        this.id = id,
+        this.userId = userId,
+        this.projectId = projectId,
+        this.categoryId = categoryId,
+        this.create_at = create_at
     }
 
     get idVoto(){
-        return this._id
+        return this.id
     }
 
     get userIdVoto(){
-        return this._userId
+        return this.userId
     }
 
     get projectIdVoto(){
-        return this._projectId
+        return this.projectId
     }
 
     get categoryIdVoto(){
-        return this._categoryId
+        return this.categoryId
     }
 
     get createAtVoto(){
-        return this._create_at
+        return this.create_at
     }
 }

@@ -2,7 +2,8 @@ export class Projeto {
     constructor({
         id, 
         nome_completo_projeto,
-        nome_projeto, descricao,
+        nome_projeto, 
+        descricao,
         palavras_chave,
         categoria_id,
         create_at,

@@ -1,8 +1,8 @@
 export class Usuario{
-    constructor(id, qrCode, createAt, nome, cpf, email, telefone, tipoVisitante, origem, status){
+    constructor(id, qr_code, create_at, nome, cpf, email, telefone, tipoVisitante, origem, status){
         this._id = id
-        this._qrCode = qrCode
-        this.createAt = createAt
+        this.qr_code = qr_code
+        this.create_at = create_at
         this.nome = nome
         this.cpf = cpf
         this.email = email
@@ -17,11 +17,11 @@ export class Usuario{
     }
 
     get qrCodeUsuario(){
-        return this._qrCode
+        return this.qr_code
     }
 
     get createAtUsuario(){
-        return this.createAt
+        return this.create_at
     }
 
     get nomeUsuario(){
