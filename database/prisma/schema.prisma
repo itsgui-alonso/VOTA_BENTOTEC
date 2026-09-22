@@ -13,7 +13,7 @@ model Vote {
   userId     String
   projectId  String
   created_at DateTime @default(now())
-  categoryId String?
+  categoryId Int?
 
   user User @relation(fields: [userId], references: [id])
 

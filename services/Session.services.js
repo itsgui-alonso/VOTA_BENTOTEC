@@ -31,14 +31,14 @@ export class SessionService{
 
         //Cria a sessao em objeto para mandar para o banco
 
-        const session = new Session(
-            null, 
-            crachaUser.idUsuario,
-            tokenCriado,
-            new Date(),
-            expiresAt 
+        const session = new Session({
+            id: null, 
+            userId: crachaUser.idUsuario,
+            token: tokenCriado,
+            create_at: new Date(),
+            expires_at: expiresAt 
             
-        )
+    })
 
         const sessionCriada = await SessionRepository.salvarSessao(session)
 

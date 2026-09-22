@@ -13,13 +13,7 @@ export class SessionRepository{
             }
         })
 
-        return new Session(
-            data.id,
-            data.userId,
-            data.token,
-            data.create_at,
-            data.expires_at
-        )
+        return new Session(data)
     }
 
     static async buscarSession(token, userId){
@@ -37,13 +31,7 @@ export class SessionRepository{
             return null
         }
 
-        return new Session(
-            session.id,
-            session.userId,
-            session.token,
-            session.create_at,
-            session.expires_at
-        )
+        return new Session(session)
     }
 
     static async buscarSessionPorId(userId){
@@ -57,13 +45,7 @@ export class SessionRepository{
             return null
         }
 
-        return new Session(
-            session.id,
-            session.userId,
-            session.token,
-            session.create_at,
-            session.expires_at
-        )
+        return new Session(session)
     }
 
     static async deletarSession(tokenDelete){

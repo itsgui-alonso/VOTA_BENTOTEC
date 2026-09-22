@@ -37,13 +37,13 @@ export class VotosService{
         }
 
 
-        const voto = new Votos(
-            null,
-            session.userIdSession,
-            projeto.idProjeto,
-            projeto.categoriaIdProjeto,
-            new Date()
-        )
+        const voto = new Votos({
+            id: null,
+            userId: session.userIdSession,
+            projectId: projeto.idProjeto,
+            categoryId: projeto.categoriaIdProjeto,
+            create_at: new Date()
+        })
 
         const votoFeito = await VotosRepository.salvarVoto(voto)
         // Ele deleta pois após o voto, ele não vai usar a mesmo token de session
