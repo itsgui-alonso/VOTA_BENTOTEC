@@ -9,34 +9,21 @@ export class VotosRepository{
                 userId: voto.userIdVoto,
                 projectId: voto.projectIdVoto,
                 categoryId: voto.categoryIdVoto,
-                created_at: voto.createAtVoto
             }
         })
 
-        return new Votos(
-            data.id,
-            data.userId,
-            data.projectId,
-            data.categoryId,
-            data.created_at
-        )
+        return new Votos(data)
     }
     //Esse metodo vai verficar quantos votos o usuario ja fez na categoria
     static async verficarQuantosVotosUserCategoria(userId, categoryId){
-        const votos = await prisma.vote.findMany({
+        const votos = await prisma.vote.count({
             where: {
                 userId,
                 categoryId
             }
         })
 
-        return votos.map(voto => new Votos(
-            voto.id,
-            voto.userId,
-            voto.projectId,
-            voto.categoryId,
-            voto.created_at
-        ))
+        return votos
     }
 
     static async verificarVotosDia(dataDesejada){
@@ -55,15 +42,9 @@ export class VotosRepository{
             }
         })
 
-        return votos.map(voto => new Votos(
-            voto.id,
-            voto.userId,
-            voto.projectId,
-            voto.categoryId,
-            voto.created_at
-        ))
+        return votos.map(voto => new Votos(voto))
     }
-
+    // Ele vai pegar todos os votos da categoria 3 por exemplo
     static async verficarVotosCategoria(categoryId){
         const votos = await prisma.vote.findMany({
             where: {
@@ -71,15 +52,9 @@ export class VotosRepository{
             }
         })
 
-        return votos.map(voto => new Votos(
-            voto.id,
-            voto.userId,
-            voto.projectId,
-            voto.categoryId,
-            voto.created_at
-        ))
+        return votos.map(voto => new Votos(voto))
     }
-
+    // Ele vai pegar todos os votos feitos nesse projeto
     static async verficarVotosProjeto(projectId){
         const votos = await prisma.vote.findMany({
             where: {
@@ -87,15 +62,9 @@ export class VotosRepository{
             }
         })
 
-        return votos.map(voto => new Votos(
-            voto.id,
-            voto.userId,
-            voto.projectId,
-            voto.categoryId,
-            voto.created_at
-        ))
+        return votos.map(voto => new Votos(voto))
     }
-
+    // Fala quantos votos cada categoria recebeu
     static async totalVotosPorCategoria(){
         const resultado = await prisma.vote.groupBy({
             by: ["categoryId"],
@@ -107,7 +76,7 @@ export class VotosRepository{
             total: result._count.id
         }))
     }
-
+    // Faa quantos votos cada projeto recebeu
     static async totalVotosPorProjeto(){
         const resultado = await prisma.vote.groupBy({
             by: ["projectId"],
