@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { VotosService } from "../services/Votos.services.js";
-
+import { votosSchema } from "../schemas/votos.schemas.js";
+import { validate } from "../middlewares/validate.js";
 const router = Router()
 
-router.post('/votos', async(req, res) =>{
+router.post('/votos', validate(votosSchema), async(req, res) =>{
     try{
         const {token, projectId} = req.body
 

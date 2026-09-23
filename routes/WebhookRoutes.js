@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { WebhookService } from "../services/Webhook.services.js";
 import crypto from "node:crypto";
+import { webhookSchema } from "../schemas/webhook.schema.js";
+import { validate } from "../middlewares/validate.js";
 const router = Router()
 
-router.post('/webhook/checkin', async (req, res) =>{
+router.post('/webhook/checkin', async (req, res, next) =>{
     try {
         const secret = req.headers['x-webhook-secret']
         const envSecret = process.env.FISHVISION_WEBHOOK_SECRET
@@ -24,7 +26,7 @@ router.post('/webhook/checkin', async (req, res) =>{
         if(a.length !== b.length || !crypto.timingSafeEqual(a, b)){
             return res.status(401).json({erro: 'Não Autorizado'})
         }
-        
+
         await WebhookService.processarCadastro(req.body)
 
         return res.status(200).json({sucesso: true})
