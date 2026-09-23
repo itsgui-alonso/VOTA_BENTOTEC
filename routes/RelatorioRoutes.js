@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { VotosRepository } from "../repositories/Votos.repository.js";
-
+import { validate } from "../middlewares/validate.js";
+import { dataSchema } from "../schemas/relatorio.schema.js";
 const router = Router()
 
 router.get('/relatorio/categorias', async (req, res)=>{
@@ -23,17 +24,9 @@ router.get('/relatorio/projetos', async (req, res) =>{
     }
 })
 
-router.get('/relatorio/data', async (req, res) =>{
+router.get('/relatorio/data', validate(dataSchema, 'query'), async (req, res) =>{
     try{
-        const {data} = req.query
-        let DataConsultada
-
-        if(data){
-            DataConsultada = new Date(data)
-        } else{
-            DataConsultada = new Date()
-        }
-
+        const DataConsultada = req.queryValidada.data ?? new Date()
         const votosData = await VotosRepository.verificarVotosDia(DataConsultada)
 
         return res.status(200).json({
