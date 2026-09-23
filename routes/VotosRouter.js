@@ -7,7 +7,7 @@ router.post('/votos', async(req, res) =>{
     try{
         const {token, projectId} = req.body
 
-        if(!token && !projectId){
+        if(!token || !projectId){
             return res.status(400).json({erro: "O Token e o ProjectId são obrigatórios para essa etapa!"})
         }
 
