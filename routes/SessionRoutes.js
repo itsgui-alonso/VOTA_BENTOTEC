@@ -4,7 +4,7 @@ import { sessionSchema } from "../schemas/session.schema.js";
 import { validate } from "../middlewares/validate.js";
 const router = Router()
 
-router.post('/session', validate(sessionSchema), async(req, res) =>{
+router.post('/validacao', validate(sessionSchema), async(req, res) =>{
 
         const { qrCode } = req.body
 

@@ -4,7 +4,7 @@ import { votosSchema } from "../schemas/votos.schemas.js";
 import { validate } from "../middlewares/validate.js";
 const router = Router()
 
-router.post('/votos', validate(votosSchema), async(req, res) =>{
+router.post('/votar', validate(votosSchema), async(req, res) =>{
 
         const {token, projectId} = req.body
 

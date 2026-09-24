@@ -33,7 +33,7 @@ function verificarSegredoWebhook(req, res, next){
     next()
 }
 
-router.post('/webhook/checkin', verificarSegredoWebhook, validate(webhookSchema), async (req, res,) => {
+router.post('/checkin', verificarSegredoWebhook, validate(webhookSchema), async (req, res,) => {
         await WebhookService.processarCadastro(req.body)
 
         return res.status(200).json({sucesso: true})
