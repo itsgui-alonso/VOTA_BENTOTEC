@@ -5,7 +5,7 @@ import { validate } from "../middlewares/validate.js";
 const router = Router()
 
 router.post('/session', validate(sessionSchema), async(req, res) =>{
-    try{
+
         const { qrCode } = req.body
 
         if(!qrCode){
@@ -18,11 +18,6 @@ router.post('/session', validate(sessionSchema), async(req, res) =>{
             token: session.tokenSession,
             expira_em: session.expires_atSession
         })
-    }
-    catch(erro){
-        console.log(erro)
-        return res.status(400).json({erro: erro.message})
-    }
 })
 
 export default router

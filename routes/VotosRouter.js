@@ -5,7 +5,7 @@ import { validate } from "../middlewares/validate.js";
 const router = Router()
 
 router.post('/votos', validate(votosSchema), async(req, res) =>{
-    try{
+
         const {token, projectId} = req.body
 
         if(!token || !projectId){
@@ -22,9 +22,5 @@ router.post('/votos', validate(votosSchema), async(req, res) =>{
                 categoryId: voto.categoryIdVoto
             }
         })
-    }
-    catch(erro){
-        return res.status(400).json({erro: erro.message})
-    }
 })
 export default router

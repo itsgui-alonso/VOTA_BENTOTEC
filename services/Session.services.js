@@ -1,6 +1,7 @@
 import { UserRepository } from "../repositories/User.repository.js";
 import { SessionRepository } from "../repositories/Session.repository.js";
 import { Session } from "../models/Session.js";
+import { AppError } from "../models/errors/AppError.js";
 import crypto  from "crypto"
 
 export class SessionService{
@@ -10,7 +11,7 @@ export class SessionService{
         const crachaUser = await UserRepository.verificarQrCode(qrCodeEscaneado)
 
         if(!crachaUser){
-            throw new Error('Usuario não existe! QrCode invalido!')
+            throw new AppError('Usuario não existe! QrCode invalido!', 404)
         }
 
         // Olha se a session esta ativa, se sim deleta 

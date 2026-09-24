@@ -34,12 +34,9 @@ function verificarSegredoWebhook(req, res, next){
 }
 
 router.post('/webhook/checkin', verificarSegredoWebhook, validate(webhookSchema), async (req, res,) => {
-    try {
         await WebhookService.processarCadastro(req.body)
 
         return res.status(200).json({sucesso: true})
-    } catch (erro) {
-        return res.status(400).json({erro: erro.message})
-    }
+    
 })
 export default router

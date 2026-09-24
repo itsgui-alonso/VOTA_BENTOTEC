@@ -1,3 +1,4 @@
+import { AppError } from "../models/errors/AppError.js";
 import { UserRepository } from "../repositories/User.repository.js";
 
 export class WebhookService {
@@ -5,7 +6,7 @@ export class WebhookService {
         const { record } = payload
 
         if(!record || !record.qr_texto){
-            throw new Error('Payload é inválido! qr_texto ausente');
+            throw new AppError('Payload é inválido! qr_texto ausente', 400);
         }
 
         return await UserRepository.upsertPorQrCode({
