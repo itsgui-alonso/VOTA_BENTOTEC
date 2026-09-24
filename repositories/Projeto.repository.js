@@ -4,7 +4,7 @@ import { Projeto } from "../models/Projetos.js";
 export class ProjetoRepository{
 
     static async bucarProjetoID(projetoId){
-        const projeto = await prisma.projetos.findFirst({
+        const projeto = await prisma.projetos.findUnique({
             where:{
                 id: projetoId
             }
@@ -20,7 +20,7 @@ export class ProjetoRepository{
     static async bucarNomeProjeto(nomeProjeto){
         const projeto = await prisma.projetos.findFirst({
             where:{
-                nome_projeto: nomeProjeto
+                nome_projeto: { contains: nomeProjeto, mode: 'insensitive'}
             }
         })
 
@@ -36,7 +36,7 @@ export class ProjetoRepository{
     static async buscarNomeCompletoProjeto(nomeCompletoProjeto){
         const projeto = await prisma.projetos.findFirst({
             where: {
-                nome_completo_projeto: nomeCompletoProjeto
+                nome_completo_projeto: { contains: nomeCompletoProjeto, mode: 'insensitive'}
             }
         })
 
@@ -58,7 +58,7 @@ export class ProjetoRepository{
     }
 
     static async buscarNumeroProjeto(numeroProjeto){
-        const projeto = await prisma.projetos.findMany({
+        const projeto = await prisma.projetos.findFirst({
             where: {
                 numero_projeto: numeroProjeto
             }
@@ -72,7 +72,7 @@ export class ProjetoRepository{
     }
 
     static async buscarStandProjeto(standProjeto){
-        const projeto = await prisma.projetos.findMany({
+        const projeto = await prisma.projetos.findFirst({
             where: {
                 stand_projeto: standProjeto
             }
@@ -105,7 +105,7 @@ export class ProjetoRepository{
     static async buscarOrientadorProjetos(orientadorProjetos){
         const projetos = await prisma.projetos.findMany({
             where: {
-                orientador: orientadorProjetos
+                orientador: { contains: orientadorProjetos, mode: 'insensitive'}
             }
         })
 
@@ -119,7 +119,7 @@ export class ProjetoRepository{
     static async buscarCoorientadorProjetos(coorientadorProjetos){
         const projetos = await prisma.projetos.findMany({
             where: {
-                co_orientador: coorientadorProjetos
+                co_orientador: { contains: coorientadorProjetos, mode: 'insensitive'}
             }
         })
 
