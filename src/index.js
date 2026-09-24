@@ -6,7 +6,7 @@ import SessionRoutes from '../routes/SessionRoutes.js'
 import VotosRoutes from '../routes/VotosRouter.js'
 import RelatorioRoutes from '../routes/RelatorioRoutes.js'
 import WebhookRoutes from '../routes/WebhookRoutes.js'
-
+import { errorHandler } from "../middlewares/errorHandler.js";
 const app = express();
 const PORT = process.env.PORT || 3000
 // Header de segurança nas respostas
@@ -36,6 +36,7 @@ app.use(SessionRoutes)
 app.use(VotosRoutes)
 app.use(RelatorioRoutes)
 
+app.use(errorHandler)
 // Tratador de erro simples, depois da rota
 app.use((erro, req, res, next) => {
     if(erro.type === 'entity.too.large') {
