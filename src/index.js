@@ -6,6 +6,7 @@ import SessionRoutes from '../routes/SessionRoutes.js'
 import VotosRoutes from '../routes/VotosRouter.js'
 import RelatorioRoutes from '../routes/RelatorioRoutes.js'
 import WebhookRoutes from '../routes/WebhookRoutes.js'
+import ProjetoRoutes from '../routes/ProjetoRoutes.js'
 import { errorHandler } from "../middlewares/errorHandler.js";
 const app = express();
 const PORT = process.env.PORT || 3000
@@ -34,7 +35,8 @@ app.use(express.json({limit: '10kb'}));
 app.use('bentovote/v1/relatorio', RelatorioRoutes)
 app.use('bentovote/v1/session', SessionRoutes)
 app.use('bentovote/v1/votos', VotosRoutes)
-app.use('bentotec/v1/webhook', WebhookRoutes)
+app.use('bentovote/v1/webhook', WebhookRoutes)
+app.use('bentovote/v1/projetos', ProjetoRoutes)
 
 app.use(errorHandler)
 // Tratador de erro simples, depois da rota
