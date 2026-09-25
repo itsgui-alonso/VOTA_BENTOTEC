@@ -3,7 +3,7 @@ import { Projeto } from "../models/Projetos.js";
 
 export class ProjetoRepository{
 
-    static async bucarProjetoID(projetoId){
+    static async buscarProjetoID(projetoId){
         const projeto = await prisma.projetos.findUnique({
             where:{
                 id: projetoId
@@ -17,7 +17,7 @@ export class ProjetoRepository{
         return new Projeto(projeto) // Como estou usando o destructor, é mais facil. Desde que esteja com os mesmos nomes no BD
     }
 
-    static async bucarNomeProjeto(nomeProjeto){
+    static async buscarNomeProjeto(nomeProjeto){
         const projeto = await prisma.projetos.findFirst({
             where:{
                 nome_projeto: { contains: nomeProjeto, mode: 'insensitive'}
@@ -48,7 +48,7 @@ export class ProjetoRepository{
     }
 
     static async buscarProjetosCategoria(categoriaId){
-        const projetos = await prisma.project.findMany({
+        const projetos = await prisma.projetos.findMany({
             where:{
                 categoria_id: categoriaId
             }
@@ -128,5 +128,40 @@ export class ProjetoRepository{
         }
 
         return projetos.map(projeto => new Projeto(projeto))
+    }
+
+    static async buscarProjetosPaginado({busca, categoria, orientador, page, limit}){
+        const filtros = {}
+
+        if(busca){
+            filtros.OR = [
+                { nome_projeto: { contains: busca, mode: 'intensive'}},
+                { palavras_chave: { contains: busca, mode: 'intensive'}}
+            ]
+        }
+
+
+        if(categoria){
+            filtros.categoria_id = categoria
+        }
+
+        if(orientador){
+            filtros.orientador = { contains: busca, mode: 'intensive'}
+        }
+
+        const pular = (page - 1) * limit
+
+        const [projetos, total] = await Promise.all([
+            prisma.projetos.findMany({
+                where: filtros,
+                include: { categoria: true, integrantes: true },
+                pular,
+                take: limit,
+                orderBy: { created_at: 'desc'}
+            }),
+            prisma.projetos.count({ where: filtros})
+        ])
+
+        return { projetos, total}
     }
 }
