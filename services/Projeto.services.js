@@ -93,5 +93,20 @@ export class ProjetoServices {
         return projetos
     }
 
-    
+    // Aqui vai ser usado na rota GET bentovote/v1/projetos
+
+    static async buscarProjetos({busca, categoria, orientador, page, limit}){
+        const { projetos, total } = await ProjetoRepository.buscarProjetosPaginado({ busca, categoria, orientador, page, limit})
+
+        return {
+            projetos, 
+            paginacao: {
+                page,
+                limit, 
+                total, 
+                totalPaginas: Math.ceil(total / limit) || 1 // Aqui ele nunca pode ser zero, ele vaia arrendonadr sempre o numero para inteiro
+                // Ou se não ele vai colocar 1
+            }
+        }
+    }
 }
