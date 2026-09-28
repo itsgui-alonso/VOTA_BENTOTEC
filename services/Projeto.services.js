@@ -1,7 +1,14 @@
 import { ProjetoRepository } from "../repositories/Projeto.repository.js";
 import { AppError } from "../models/errors/AppError.js";
-import prisma from "../database/prisma.js";
+import redis from "../database/redis.js";
 
+
+const TTL_CACHE_PROJETOS = 90 // segundos que o cache fica valendo. TTL = tempo de vida
+const PREFIXO_CACHE_PROJETOS = 'projetos:busca:' // prefixo que vamos criar para a chave. Para facilitar achar/apagar essa chave depois
+
+function montarChaveCacheProjetos({ busca, categoria, orientador, page, limit }){
+    return `${PREFIXO_CACHE_PROJETOS}${JSON.stringify({ busca, categoria, orientador, page, limit })}`
+}
 export class ProjetoServices {
     
     static async buscarProjetoPorId(id){
@@ -96,9 +103,20 @@ export class ProjetoServices {
     // Aqui vai ser usado na rota GET bentovote/v1/projetos
 
     static async buscarProjetos({busca, categoria, orientador, page, limit}){
+
+        const chave = montarChaveCacheProjetos({ busca, categoria, orientador, page, limit })
+        // Variavel cacheado = cria a chave de cache dentro do redis
+        const cacheado = await redis.get(chave)
+        
+        // Se existir esse cache já no redis, ele só devolve e é isso
+        if(cacheado){
+            return JSON.parse(cacheado) // aquilo que era texto, tranforma para objeto JSON novamente
+        }
+
+        // Caso não tenha o cache já criado: vai buscar no Postgres, antes de mandar a informação salva no redis para depois já ter aqula info no redis
         const { projetos, total } = await ProjetoRepository.buscarProjetosPaginado({ busca, categoria, orientador, page, limit})
 
-        return {
+        const resultado = {
             projetos, 
             paginacao: {
                 page,
@@ -108,5 +126,10 @@ export class ProjetoServices {
                 // Ou se não ele vai colocar 1
             }
         }
+
+        // Como eu falei, pega do banco e antes de devolver a resposta salva em um cache do redis
+        await redis.set(chave, JSON.stringify(resultado), 'EX', TTL_CACHE_PROJETOS) // JSON.stringify tranforma para texto pois a chave trabalha somente com texto
+
+        return resultado
     }
 }
