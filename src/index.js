@@ -21,7 +21,7 @@ const origensPermitidas = (process.env.CORS_ORIGENS || '')
 app.use(cors({
     origin(origin, callback){
         // Sem header Origin (webhook, Postman, curl): não é navegador, deixa passar
-        if(origin) return callback(null, true)
+        if(!origin) return callback(null, true)
         // A origem está na lista, então deixa passar
         if(origensPermitidas.includes(origin)) return callback(null, true)
         //Qualquer coisa, sem ser esses dois acima - NAvegador Bloqueia
