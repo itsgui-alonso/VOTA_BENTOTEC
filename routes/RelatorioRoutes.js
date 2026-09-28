@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { VotosRepository } from "../repositories/Votos.repository.js";
+import { RelatorioServices } from "../services/Relatorio.services.js";
 import { validate } from "../middlewares/validate.js";
 import { dataSchema } from "../schemas/relatorio.schema.js";
 import { success } from "../utils/Resposta.js";
@@ -7,12 +8,12 @@ const router = Router()
 
 router.get('/categorias', async (req, res)=>{
 
-        const resultado = await VotosRepository.totalVotosPorCategoria()
+        const resultado = await RelatorioServices.totalVotosPorCategoria()
         return success(res, resultado)
 })
 
 router.get('/projetos', async (req, res) =>{
-        const resultado = await VotosRepository.totalVotosPorProjeto()
+        const resultado = await RelatorioServices.totalVotosPorProjeto()
         return success(res, resultado)
 })
 
