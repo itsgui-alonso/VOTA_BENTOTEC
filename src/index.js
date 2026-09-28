@@ -8,10 +8,14 @@ import RelatorioRoutes from '../routes/RelatorioRoutes.js'
 import WebhookRoutes from '../routes/WebhookRoutes.js'
 import ProjetoRoutes from '../routes/ProjetoRoutes.js'
 import { errorHandler, RotaNaoEncontrada } from "../middlewares/errorHandler.js";
+import { LimiterGlobal, LimiterSession, LimiterVotos, LimiterWebhook } from "../middlewares/rateLimiter.js";
 const app = express();
+app.set('trust proxy', 1)
 const PORT = process.env.PORT || 3000
 // Header de segurança nas respostas
 app.use(helmet())
+
+app.use(LimiterGlobal)
 
 const origensPermitidas = (process.env.CORS_ORIGENS || '')
 .split(',') // Spara aonde tem virgula
@@ -33,9 +37,9 @@ app.use(cors({
 app.use(express.json({limit: '10kb'}));
 
 app.use('/bentovote/v1/relatorio', RelatorioRoutes)
-app.use('/bentovote/v1/session', SessionRoutes)
-app.use('/bentovote/v1/votos', VotosRoutes)
-app.use('/bentovote/v1/webhook', WebhookRoutes)
+app.use('/bentovote/v1/session', LimiterSession, SessionRoutes)
+app.use('/bentovote/v1/votos', LimiterVotos, VotosRoutes)
+app.use('/bentovote/v1/webhook', LimiterWebhook, WebhookRoutes)
 app.use('/bentovote/v1/projetos', ProjetoRoutes)
 
 // RotaNaoEncontrada vem depois de todas as rotas. errorHandler vem por último, porque só recebe erros vindos de tudo que está antes dele.
