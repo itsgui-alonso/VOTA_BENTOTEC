@@ -10,14 +10,7 @@ export class VotosService{
         const session = await SessionRepository.buscarSession(token, null)
 
         if(!session){
-            throw new AppError('Sessão Invalida! Precisa de um Token válido ou existente para votar', 401)
-        }
-        // Verfica se a session expirou
-        const dataHoraHoje = new Date()
-
-        if(dataHoraHoje > session.expires_atSession){
-            await SessionRepository.deletarSession(token)
-            throw new AppError('Sessão Expirou! Tente novamente', 401)
+            throw new AppError('Sessão inválida ou expirada! Escaneie novamente para votar', 401)
         }
 
         // Verfica se o projeto existe
