@@ -1,10 +1,11 @@
 import { ProjetoRepository } from "../repositories/Projeto.repository.js";
 import { AppError } from "../models/errors/AppError.js";
 import redis from "../database/redis.js";
+import { cache } from "react";
 
 
 const TTL_CACHE_PROJETOS90 = 90 // segundos que o cache fica valendo. TTL = tempo de vida -  1min e 30
-const TTL_CACHE_PROJETOS600 = 600 // segundos que o cache fica valendo. TTL = tempo de vida - 10 min
+const TTL_CACHE_PROJETOS300 = 300 // segundos que o cache fica valendo. TTL = tempo de vida - 5 min
 
 const PREFIXO_CACHE_PROJETOS = 'projetos:busca:' // prefixo que vamos criar para a chave. Para facilitar achar/apagar essa chave depois
 
@@ -28,18 +29,28 @@ export class ProjetoServices {
             throw new AppError('Projeto não encontrado', 404)
         }
 
-        await redis.set(chave, JSON.stringify(projeto), "EX", TTL_CACHE_PROJETOS600) // Usei um TTL de 10 min por ser uma busca extremamente especifica de ID
+        await redis.set(chave, JSON.stringify(projeto), "EX", TTL_CACHE_PROJETOS300) // Usei um TTL de 5 min por ser uma busca extremamente especifica de ID
 
         return projeto
     }
 
     static async buscarNomeProjeto(nomeProjeto){
+        const chave = `projeto:nome:${nomeProjeto.toLowerCase()}` // tudo para minusculo
+
+        const cacheado = await redis.get(cacheado)
+
+        if(cacheado){
+            return JSON.parse(cacheado)
+        }
 
         const projeto = await ProjetoRepository.buscarNomeProjeto(nomeProjeto)
 
         if(!projeto){
             throw new AppError('Projeto não encontrado', 404)
         }
+
+        await redis.set(chave, JSON.stringify(projeto), "EX", TTL_CACHE_PROJETOS300)
+        
         return projeto
     }
 
