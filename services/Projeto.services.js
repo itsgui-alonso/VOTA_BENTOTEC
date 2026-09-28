@@ -3,7 +3,9 @@ import { AppError } from "../models/errors/AppError.js";
 import redis from "../database/redis.js";
 
 
-const TTL_CACHE_PROJETOS = 90 // segundos que o cache fica valendo. TTL = tempo de vida
+const TTL_CACHE_PROJETOS90 = 90 // segundos que o cache fica valendo. TTL = tempo de vida -  1min e 30
+const TTL_CACHE_PROJETOS600 = 600 // segundos que o cache fica valendo. TTL = tempo de vida - 10 min
+
 const PREFIXO_CACHE_PROJETOS = 'projetos:busca:' // prefixo que vamos criar para a chave. Para facilitar achar/apagar essa chave depois
 
 function montarChaveCacheProjetos({ busca, categoria, orientador, page, limit }){
@@ -12,11 +14,22 @@ function montarChaveCacheProjetos({ busca, categoria, orientador, page, limit })
 export class ProjetoServices {
     
     static async buscarProjetoPorId(id){
+        const chave = `projeto:id:${id}`
+        
+        const cacheado = await redis.get(chave)
+
+        if(cacheado){
+            return  JSON.parse(cacheado) // Tranforma em objeto JSON - veio String
+        }
+
         const projeto = await ProjetoRepository.buscarProjetoID(id)
 
         if(!projeto){
             throw new AppError('Projeto não encontrado', 404)
         }
+
+        await redis.set(chave, JSON.stringify(projeto), "EX", TTL_CACHE_PROJETOS600) // Usei um TTL de 10 min por ser uma busca extremamente especifica de ID
+
         return projeto
     }
 
@@ -128,7 +141,7 @@ export class ProjetoServices {
         }
 
         // Como eu falei, pega do banco e antes de devolver a resposta salva em um cache do redis
-        await redis.set(chave, JSON.stringify(resultado), 'EX', TTL_CACHE_PROJETOS) // JSON.stringify tranforma para texto pois a chave trabalha somente com texto
+        await redis.set(chave, JSON.stringify(resultado), 'EX', TTL_CACHE_PROJETOS90) // JSON.stringify tranforma para texto pois a chave trabalha somente com texto
 
         return resultado
     }
