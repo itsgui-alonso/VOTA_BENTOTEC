@@ -50,7 +50,7 @@ export class ProjetoServices {
         }
 
         await redis.set(chave, JSON.stringify(projeto), "EX", TTL_CACHE_PROJETOS300)
-        
+
         return projeto
     }
 
@@ -65,12 +65,21 @@ export class ProjetoServices {
     }
 
     static async buscarProjetosPorCategoria(categoriaId){
+        const chave = `projetos:categoria:${categoriaId}`
+
+        const cacheado = await redis.get(chave)
+
+        if(cacheado){
+            return JSON.parse(cacheado)
+        }
+
         const projetos = await ProjetoRepository.buscarProjetosCategoria(categoriaId)
         
         if(!projetos || projetos.length === 0){
             throw new AppError("Projeto não encontrado", 404);
         }
-
+        
+        await redis.set(chave, JSON.stringify(projetos), "EX", TTL_CACHE_PROJETOS300)
         return projetos
     }
 
