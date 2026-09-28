@@ -6,7 +6,7 @@ export class Projeto {
         descricao,
         palavras_chave,
         categoria_id,
-        create_at,
+        created_at,
         numero_projeto,
         stand_projeto,
         escola,
@@ -19,7 +19,7 @@ export class Projeto {
         this.descricao = descricao,
         this.palavras_chave = palavras_chave,
         this.categoria_id = categoria_id,
-        this.create_at = create_at,
+        this.created_at = created_at,
         this.numero_projeto = numero_projeto,
         this.stand_projeto = stand_projeto,
         this.escola = escola,
@@ -48,7 +48,7 @@ export class Projeto {
     }
 
     get createAt(){
-        return this.create_at
+        return this.created_at
     }
 
     get numeroStand(){
@@ -57,5 +57,12 @@ export class Projeto {
 
     get numeroProjeto(){
         return this.numero_projeto
+    }
+
+    // O JSON.stringify (e o res.json) chama este método sozinho.
+    // Sem ele, o campo sairia como "_id" na resposta.
+    toJSON(){
+        const { _id, ...resto } = this
+        return { id: _id, ...resto }
     }
 }
