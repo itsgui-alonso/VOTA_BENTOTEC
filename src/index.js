@@ -7,7 +7,7 @@ import VotosRoutes from '../routes/VotosRouter.js'
 import RelatorioRoutes from '../routes/RelatorioRoutes.js'
 import WebhookRoutes from '../routes/WebhookRoutes.js'
 import ProjetoRoutes from '../routes/ProjetoRoutes.js'
-import { errorHandler } from "../middlewares/errorHandler.js";
+import { errorHandler, RotaNaoEncontrada } from "../middlewares/errorHandler.js";
 const app = express();
 const PORT = process.env.PORT || 3000
 // Header de segurança nas respostas
@@ -38,14 +38,10 @@ app.use('/bentovote/v1/votos', VotosRoutes)
 app.use('/bentovote/v1/webhook', WebhookRoutes)
 app.use('/bentovote/v1/projetos', ProjetoRoutes)
 
+// RotaNaoEncontrada vem depois de todas as rotas. errorHandler vem por último, porque só recebe erros vindos de tudo que está antes dele.
+app.use(RotaNaoEncontrada)
 app.use(errorHandler)
-// Tratador de erro simples, depois da rota
-app.use((erro, req, res, next) => {
-    if(erro.type === 'entity.too.large') {
-        return res.status(413).json({erro: 'O corpo da requisição é muito grande! O limite é de 10kb'})
-    }
-    return res.status(erro.status || 500).json({erro: erro.message})
-})
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
