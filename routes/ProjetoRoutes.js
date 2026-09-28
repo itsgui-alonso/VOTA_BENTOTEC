@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ProjetoServices } from "../services/Projeto.services.js";
 import { validate } from "../middlewares/validate.js";
-import { projetosSchema } from "../schemas/projetos.schema.js";
+import { projetosSchema, projetoIdSchema } from "../schemas/projetos.schema.js";
 import { success } from "../utils/Resposta.js";
 
 const router = Router()
@@ -16,8 +16,8 @@ router.get('/', validate(projetosSchema, 'query'), async (req, res) => {
 
 //GET /bentovote/v1/projetos/:id
 
-router.get('/:id', async (req, res) => {
-    const projeto = await ProjetoServices.buscarProjetoPorId(req.params.id)
+router.get('/:id', validate(projetoIdSchema, 'params'), async (req, res) => {
+    const projeto = await ProjetoServices.buscarProjetoPorId(req.paramsValidado.id)
 
     return success(res, projeto)
 })

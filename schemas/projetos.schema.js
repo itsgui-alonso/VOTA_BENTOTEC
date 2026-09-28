@@ -8,5 +8,9 @@ export const projetosSchema = z.object({
     categoria: z.coerce.number().int("A categoria deve ser um numero inteiro").positive().optional(),
     orientador: z.string().trim().min(1, "O nome do Orientador não pode ser vazio").max(100).optional(),
     page: z.coerce.number().int().positive('A page deve ser maior que 0').default(1),
-    limit: z.coerce.number().int().positive("O limit deve ser maior que 0").max(100, "Limit maximo é de 100").default(20)
+    limit: z.coerce.number().int().positive("O limit deve ser maior que 0").max(100, "Limit maximo é de 100").default(20),
+})
+
+export const projetoIdSchema = z.object({
+    id: z.string().uuid("O id do projeto é inválido!") // Só aceita texto no formato de UUID
 })
