@@ -3,6 +3,8 @@ import { WebhookService } from "../services/Webhook.services.js";
 import crypto from "node:crypto";
 import { webhookSchema } from "../schemas/webhook.schema.js";
 import { validate } from "../middlewares/validate.js";
+import { success } from "../utils/Resposta.js";
+import { AppError } from "../models/errors/AppError.js";
 const router = Router()
 
 
@@ -27,7 +29,7 @@ function verificarSegredoWebhook(req, res, next){
     // reabre o timing attack, porque o tamanho do segredo não revela nada
     // sobre o conteúdo dele.
     if(segredoRecebido.length !== segredoEsperado.length || !crypto.timingSafeEqual(segredoRecebido, segredoEsperado)){
-        return res.status(401).json({erro: 'Não autorizado'})
+        throw new AppError('Não autorizado', 401)
     }
 
     next()
@@ -36,7 +38,7 @@ function verificarSegredoWebhook(req, res, next){
 router.post('/checkin', verificarSegredoWebhook, validate(webhookSchema), async (req, res,) => {
         await WebhookService.processarCadastro(req.body)
 
-        return res.status(200).json({sucesso: true})
+        return success(res)
     
 })
 export default router
