@@ -1,3 +1,5 @@
+import { fail } from "../utils/Resposta"
+
 export function validate(schema, target = 'body'){
     return (req, res, next) => {
 
@@ -13,7 +15,7 @@ export function validate(schema, target = 'body'){
 
             // Retorna resposta para o erro de validacao (400)
 
-            return res.status(400).json({erro: "Dados inválidos", detalhes})
+            return fail(res, 400, "Dados Inválidos", detalhes)
         }
         // Se a validação passar , substitui o req.body pelo dados limpos e validados ou para o req.query
         if(target === 'body'){
