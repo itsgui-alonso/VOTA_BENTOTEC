@@ -16,7 +16,7 @@ router.get('/projetos', async (req, res) =>{
 })
 
 router.get('/data', validate(dataSchema, 'query'), async (req, res) =>{
-        const DataConsultada = req.queryValidada.data ?? new Date()
+        const DataConsultada = req.queryValidado.data ?? new Date()
         const votosData = await VotosRepository.verificarVotosDia(DataConsultada)
 
         return res.status(200).json({

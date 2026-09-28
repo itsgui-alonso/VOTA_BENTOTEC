@@ -32,11 +32,11 @@ app.use(cors({
 // Leitura com limite de tamanho, ideal para o que estamos usando
 app.use(express.json({limit: '10kb'}));
 
-app.use('bentovote/v1/relatorio', RelatorioRoutes)
-app.use('bentovote/v1/session', SessionRoutes)
-app.use('bentovote/v1/votos', VotosRoutes)
-app.use('bentovote/v1/webhook', WebhookRoutes)
-app.use('bentovote/v1/projetos', ProjetoRoutes)
+app.use('/bentovote/v1/relatorio', RelatorioRoutes)
+app.use('/bentovote/v1/session', SessionRoutes)
+app.use('/bentovote/v1/votos', VotosRoutes)
+app.use('/bentovote/v1/webhook', WebhookRoutes)
+app.use('/bentovote/v1/projetos', ProjetoRoutes)
 
 app.use(errorHandler)
 // Tratador de erro simples, depois da rota

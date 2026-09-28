@@ -135,8 +135,8 @@ export class ProjetoRepository{
 
         if(busca){
             filtros.OR = [
-                { nome_projeto: { contains: busca, mode: 'intensive'}},
-                { palavras_chave: { contains: busca, mode: 'intensive'}}
+                { nome_projeto: { contains: busca, mode: 'insensitive'}},
+                { palavras_chave: { contains: busca, mode: 'insensitive'}}
             ]
         }
 
@@ -146,7 +146,7 @@ export class ProjetoRepository{
         }
 
         if(orientador){
-            filtros.orientador = { contains: busca, mode: 'intensive'}
+            filtros.orientador = { contains: busca, mode: 'insensitive'}
         }
 
         const pular = (page - 1) * limit
@@ -155,7 +155,7 @@ export class ProjetoRepository{
             prisma.projetos.findMany({
                 where: filtros,
                 include: { categoria: true, integrantes: true },
-                pular,
+                skip: pular,
                 take: limit,
                 orderBy: { created_at: 'desc'}
             }),

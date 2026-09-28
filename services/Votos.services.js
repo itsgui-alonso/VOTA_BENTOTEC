@@ -21,7 +21,7 @@ export class VotosService{
         }
 
         // Verfica se o projeto existe
-        const projeto = await ProjetoRepository.bucarProjetoID(projectId)
+        const projeto = await ProjetoRepository.buscarProjetoID(projectId)
 
         if(!projeto){
             throw new AppError('O Projeto não existe! Busque por um projeto existente', 404)
