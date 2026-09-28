@@ -11,7 +11,7 @@ const router = Router()
 router.get('/', validate(projetosSchema, 'query'), async (req, res) => {
     const resultado = await ProjetoServices.buscarProjetos(req.queryValidado)
 
-    return success(res, projetosSchema, 200, { paginacao })
+    return success(res, resultado)
 })
 
 //GET /bentovote/v1/projetos/:id

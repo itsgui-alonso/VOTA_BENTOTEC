@@ -146,7 +146,7 @@ export class ProjetoRepository{
         }
 
         if(orientador){
-            filtros.orientador = { contains: busca, mode: 'insensitive'}
+            filtros.orientador = { contains: orientador, mode: 'insensitive'}
         }
 
         const pular = (page - 1) * limit

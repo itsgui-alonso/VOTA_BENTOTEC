@@ -1,4 +1,4 @@
-import { fail } from "../utils/Resposta"
+import { fail } from "../utils/Resposta.js"
 
 export function validate(schema, target = 'body'){
     return (req, res, next) => {
