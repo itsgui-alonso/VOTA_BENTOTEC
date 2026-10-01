@@ -1,6 +1,6 @@
 import { VotosRepository } from "../repositories/Votos.repository.js";
 import redis from "../database/redis.js";
-import { cache } from "react";
+
 
 const TTL_CACHE_RELATORIO = 30 // 30 segundo porque vai  ter que atuazlair mais rapido
 
@@ -9,7 +9,7 @@ const CHAVE_PROJETOS = "relatorio:projetos"
 
 export class RelatorioServices{
     static async totalVotosPorCategoria(){
-        const cacheado = await redis.get(cacheado)
+        const cacheado = await redis.get(CHAVE_CATEGORIAS)
 
         if(cacheado){
             return JSON.parse(cacheado)

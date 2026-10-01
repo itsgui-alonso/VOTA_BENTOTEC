@@ -1,7 +1,7 @@
 import { ProjetoRepository } from "../repositories/Projeto.repository.js";
 import { AppError } from "../models/errors/AppError.js";
 import redis from "../database/redis.js";
-import { cache } from "react";
+
 
 
 const TTL_CACHE_PROJETOS90 = 90 // segundos que o cache fica valendo. TTL = tempo de vida -  1min e 30
@@ -37,7 +37,7 @@ export class ProjetoServices {
     static async buscarNomeProjeto(nomeProjeto){
         const chave = `projeto:nome:${nomeProjeto.toLowerCase()}` // tudo para minusculo
 
-        const cacheado = await redis.get(cacheado)
+        const cacheado = await redis.get(chave)
 
         if(cacheado){
             return JSON.parse(cacheado)
