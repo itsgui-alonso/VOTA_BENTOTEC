@@ -136,7 +136,11 @@ export class ProjetoRepository{
         if(busca){
             filtros.OR = [
                 { nome_projeto: { contains: busca, mode: 'insensitive'}},
-                { palavras_chave: { contains: busca, mode: 'insensitive'}}
+                { palavras_chave: { contains: busca, mode: 'insensitive'}},
+                { nome_completo_projeto: { contains: busca, mode: 'insensitive'}},
+                { orientador: { contains: busca, mode: 'insensitive'}},
+                { co_orientador: { contains: busca, mode: 'insensitive'}},
+                { integrantes: { some: { nome: { contains: busca, mode: 'insensitive'}}}} // Algum integrante que tem esse nome
             ]
         }
 
@@ -149,7 +153,7 @@ export class ProjetoRepository{
             filtros.orientador = { contains: orientador, mode: 'insensitive'}
         }
 
-        const pular = (page - 1) * limit
+        const pular = (page - 1) * limit // Vamos supor, pagina 3 com 10 projetos -> pula os 20 iniciais
 
         const [projetos, total] = await Promise.all([
             prisma.projetos.findMany({
@@ -157,7 +161,7 @@ export class ProjetoRepository{
                 include: { categoria: true, integrantes: true },
                 skip: pular,
                 take: limit,
-                orderBy: { created_at: 'desc'}
+                orderBy: [{ created_at: 'desc'}, { id: 'asc'}] // O ID serve para desempatar, para a ordem n variar entre as paginas
             }),
             prisma.projetos.count({ where: filtros})
         ])
