@@ -1,6 +1,7 @@
 import { ProjetoRepository } from "../repositories/Projeto.repository.js";
 import { AppError } from "../models/errors/AppError.js";
 import redis from "../database/redis.js";
+import { toLowerCase } from "zod";
 
 
 
@@ -10,7 +11,10 @@ const TTL_CACHE_PROJETOS300 = 300 // segundos que o cache fica valendo. TTL = te
 const PREFIXO_CACHE_PROJETOS = 'projetos:busca:' // prefixo que vamos criar para a chave. Para facilitar achar/apagar essa chave depois
 
 function montarChaveCacheProjetos({ busca, categoria, orientador, page, limit }){
-    return `${PREFIXO_CACHE_PROJETOS}${JSON.stringify({ busca, categoria, orientador, page, limit })}`
+    return `${PREFIXO_CACHE_PROJETOS}${JSON.stringify({ 
+        busca: busca?.toLowerCase(), // fica em minusculo e o ? evita erro quando a busca é undefined
+        categoria, orientador, page, limit
+    })}`
 }
 export class ProjetoServices {
     
