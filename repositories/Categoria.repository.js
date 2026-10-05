@@ -1,5 +1,5 @@
 import prisma from "../database/prisma";
-import { Categoria } from "../models/Categoria";
+import { Categoria } from "../models/Categoria.js";
 
 export class CategoriaRepository {
     static async listarTodas(){
