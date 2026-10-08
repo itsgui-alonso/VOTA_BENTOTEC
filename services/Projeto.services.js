@@ -19,7 +19,7 @@ function montarChaveCacheProjetos({ busca, categoria, orientador, page, limit })
 export class ProjetoServices {
     
     static async buscarProjetoPorId(id){
-        const chave = `projeto:id:${id}`
+        const chave = `projeto:detalhe:v2:${id}` 
         
         const cacheado = await redis.get(chave)
 
@@ -27,7 +27,7 @@ export class ProjetoServices {
             return  JSON.parse(cacheado) // Tranforma em objeto JSON - veio String
         }
 
-        const projeto = await ProjetoRepository.buscarProjetoID(id)
+        const projeto = await ProjetoRepository.buscarProjetoDetalhado(id) // agora busca com os integrantes
 
         if(!projeto){
             throw new AppError('Projeto não encontrado', 404)
