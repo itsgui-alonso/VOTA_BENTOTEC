@@ -4,6 +4,7 @@ export class Projeto {
         nome_completo_projeto,
         nome_projeto, 
         descricao,
+        imagem_url,
         palavras_chave,
         categoria_id,
         created_at,
@@ -11,12 +12,13 @@ export class Projeto {
         stand_projeto,
         escola,
         orientador,
-        co_orientador
+        co_orientador, integrantes = []
     }){
         this._id = id,
         this.nome_completo_projeto = nome_completo_projeto,
         this.nome_projeto = nome_projeto,
         this.descricao = descricao,
+        this.imagem_url = imagem_url,
         this.palavras_chave = palavras_chave,
         this.categoria_id = categoria_id,
         this.created_at = created_at,
@@ -24,7 +26,8 @@ export class Projeto {
         this.stand_projeto = stand_projeto,
         this.escola = escola,
         this.orientador = orientador,
-        this.co_orientador = co_orientador
+        this.co_orientador = co_orientador,
+        this.integrantes = integrantes
     }
 
     get idProjeto(){

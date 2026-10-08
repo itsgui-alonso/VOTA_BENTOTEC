@@ -1,4 +1,4 @@
-import prisma from "../database/prisma";
+import prisma from "../database/prisma.js";
 import { Categoria } from "../models/Categoria.js";
 
 export class CategoriaRepository {

@@ -1,6 +1,6 @@
 import { CategoriaRepository } from "../repositories/Categoria.repository.js";
 import redis from "../database/redis.js";
-import { cache } from "react";
+
 
 const CHAVE_CACHE = 'categorias:todas' // chave fixa, a lista é igual para todos
 const TTL_CACHE1h = 3600 // 1 hora, nunca mudam
