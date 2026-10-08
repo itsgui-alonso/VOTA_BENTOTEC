@@ -168,4 +168,19 @@ export class ProjetoRepository{
 
         return { projetos, total}
     }
+
+    static async buscarProjetoDetalhado(projetoId){
+        const projeto = await prisma.projetos.findUnique({
+            where: {id:projetoId}, // Filtro do id que veio na url
+            include: {
+                integrantes: { orderBy: {nome: 'asc'}} // pega na tebela de inetegrantes, em ordem alfabetica
+            }
+        })
+
+        if(!projeto){
+            return null
+        }
+
+        return new Projeto(projeto)
+    }
 }
