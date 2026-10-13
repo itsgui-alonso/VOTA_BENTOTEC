@@ -20,4 +20,11 @@ router.post('/votar', validate(votosSchema), async(req, res) =>{
             }
         })
 })
+
+// POST /bentovote/v1/votos/restantes → quantos votos a pessoa ainda tem na categoria do projeto
+router.post('/restantes', validate(votosSchema), async (req, res) => {
+    const { token, projectId } = req.body // reaproveita o schema { token, projectId }
+    const dados = await VotosService.consultarVotosRestantes(token, projectId) // dados já validados
+    return success(res, dados) // { categoria, limite, usados, restantes, ... }
+})
 export default router
