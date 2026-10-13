@@ -1,3 +1,4 @@
+import { da } from "zod/locales"
 import redis from "../database/redis.js"
 import { Session } from "../models/Session.js"
 
@@ -32,7 +33,7 @@ export class SessionRepository{
             return null
         }
 
-        const dados = JSON.parse(cru)
+        const dados = JSON.parse(dado)
 
         if(userId !== null && dados.userId !== userId){
             return null

@@ -183,4 +183,14 @@ export class ProjetoRepository{
 
         return new Projeto(projeto)
     }
+
+    static async buscarCategoria(categoriaId){
+        if(categoriaId == null){
+            return null
+        }
+
+        return await prisma.categoria.findUnique({
+            where: { id: categoriaId }
+        })
+    }
 }
