@@ -34,4 +34,6 @@ export class CurtidasRepository {
         })
         return linhas.map(linha => linha.projeto_id)
     }
+
+
 }

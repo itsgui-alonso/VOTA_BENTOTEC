@@ -76,7 +76,18 @@ export class VotosRepository{
             total: result._count.id
         }))
     }
-    // Faa quantos votos cada projeto recebeu
+
+    static async totalVotosPorDia(){
+        const linhas = await prisma.$queryRaw`
+        SELECT to_char(("created_at" AT TIME ZONE 'UTC') AT TIME ZONE 'America/Sao_Paulo', 'YYYY-MM-DD') AS data,
+               COUNT(*)::int AS total
+        FROM "Vote"
+        GROUP BY data
+        ORDER BY data`
+    return linhas // [{ data: '2026-10-22', total: 611 }, ...]
+    }
+    
+    // Fala quantos votos cada projeto recebeu
     static async totalVotosPorProjeto(){
         const resultado = await prisma.vote.groupBy({
             by: ["projectId"],
