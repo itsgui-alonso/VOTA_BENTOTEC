@@ -1,4 +1,4 @@
-import prisma from "../database/prisma";
+import prisma from "../database/prisma.js";
 
 export class CurtidasRepository {
 
@@ -8,20 +8,20 @@ export class CurtidasRepository {
         })
     }
 
-    static async criarCurtida(visitante_id, projectId){
+    static async criarCurtida(visitanteId, projetoId){
         return prisma.curtidas.createMany({
             data: [{ visitante_id: visitanteId, projeto_id: projetoId}],
             skipDuplicates: true //  toque duplo rapido não gera eero
         })
     }
 
-    static async removerCurtida(visitanteId, projectId){ // apaga a curtida (não dá erro se não existir)
+    static async removerCurtida(visitanteId, projetoId){ // apaga a curtida (não dá erro se não existir)
         return prisma.curtidas.deleteMany({
             where: { visitante_id: visitanteId, projeto_id: projetoId }
         })
     }
 
-    static async contarPorProjeto(projectId){
+    static async contarPorProjeto(projetoId){
         return prisma.curtidas.count({
             where: { projeto_id: projetoId } //  total de curtidas por projetos
         })
@@ -30,7 +30,7 @@ export class CurtidasRepository {
     static async listarProjetosCurtidos(visitanteId){
         const linhas = await prisma.curtidas.findMany({ // tudo o que esse aparelho curtiu
             where: { visitante_id: visitanteId },
-            select: { projetoId: true }
+            select: { projeto_id: true }
         })
         return linhas.map(linha => linha.projeto_id)
     }
