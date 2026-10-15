@@ -28,4 +28,9 @@ router.get('/data', validate(dataSchema, 'query'), async (req, res) =>{
         })
 })
 
+router.get('/resumo', async (req, res) => {
+        const resultado = await RelatorioServices.resumo()
+        return success(res, resultado)
+})
+
 export default router
