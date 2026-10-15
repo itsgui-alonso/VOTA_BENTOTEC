@@ -7,9 +7,10 @@ import VotosRoutes from '../routes/VotosRouter.js'
 import RelatorioRoutes from '../routes/RelatorioRoutes.js'
 import WebhookRoutes from '../routes/WebhookRoutes.js'
 import ProjetoRoutes from '../routes/ProjetoRoutes.js'
+import CurtidasRoutes from '../routes/CurtidasRoutes.js'
 import CategoriaRoutes from '../routes/CategoriaRoutes.js'
 import { errorHandler, RotaNaoEncontrada } from "../middlewares/errorHandler.js";
-import { LimiterGlobal, LimiterSession, LimiterVotos, LimiterWebhook } from "../middlewares/rateLimiter.js";
+import { LimiterGlobal, LimiterSession, LimiterVotos, LimiterWebhook, LimiterCurtidas } from "../middlewares/rateLimiter.js";
 const app = express();
 app.set('trust proxy', 1)
 const PORT = process.env.PORT || 3000
@@ -43,6 +44,7 @@ app.use('/bentovote/v1/votos', LimiterVotos, VotosRoutes)
 app.use('/bentovote/v1/webhook', LimiterWebhook, WebhookRoutes)
 app.use('/bentovote/v1/projetos', ProjetoRoutes)
 app.use('/bentovote/v1/categorias', CategoriaRoutes)
+app.use('/bentovote/v1/curtidas', LimiterCurtidas, CurtidasRoutes)
 
 // RotaNaoEncontrada vem depois de todas as rotas. errorHandler vem por último, porque só recebe erros vindos de tudo que está antes dele.
 app.use(RotaNaoEncontrada)

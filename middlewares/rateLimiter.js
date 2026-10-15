@@ -51,3 +51,10 @@ export const LimiterWebhook = criarLimiter({
     janelaMS: 60 *  1000,
     mensagem: 'Muitas requisições do webhook'
 })
+
+export const LimiterCurtidas = criarLimiter({
+    prefixo: 'curtidas',          // prefixo próprio no Redis
+    limite: 30,                   // curtir é mais leve que votar, então o limite é maior
+    janelaMS: 60 * 1000,
+    mensagem: 'Muitas curtidas seguidas. Aguarde um minuto'
+})
