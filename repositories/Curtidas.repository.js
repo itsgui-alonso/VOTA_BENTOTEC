@@ -35,5 +35,28 @@ export class CurtidasRepository {
         return linhas.map(linha => linha.projeto_id)
     }
 
+    static async maisCurtidos(limite = 4){
+        const grupos = await prisma.curtidas.groupBy({
+            by: ['projeto_id'],
+            _count: { _all: true },
+            orderBy: [
+                { _count: { projeto_id: 'desc' } },
+                { projeto_id: 'asc' }
+            ],
+            take: limite // limite de 4 pois vão aparecer os 4 mais curtidos
+        })
+
+        const ids = grupos.map(g => g.projeto_id)
+        const projetos = await prisma.projetos.findMany({
+            where: { id: { in: ids } },
+            select: { id: true, nome_projeto: true }
+        })
+
+        return grupos.map(grupo => ({
+            id: grupo.projeto_id,
+            nome: projetos.find(p => p.id === grupo.projeto_id)?.nome_projeto ?? 'Projeto',
+            curtidas: grupo._count._all
+        }))
+    }
 
 }
