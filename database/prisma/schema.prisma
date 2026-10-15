@@ -63,6 +63,7 @@ model projetos {
   orientador            String?
   co_orientador         String?
   integrantes           integrantes[]
+  curtidas              curtidas[]
   categoria             categoria?    @relation(fields: [categoria_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -79,4 +80,17 @@ model User {
   created_at    DateTime  @default(now())
   sessions      Session[]
   votes         Vote[]
+}
+
+model curtidas {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid  // id da curtida
+  visitante_id String   @db.Uuid                                                 // id anônimo do aparelho
+  projeto_id   String   @db.Uuid                                                 // projeto curtido
+  created_at   DateTime @default(now()) @db.Timestamptz(6)                       // quando curtiu
+
+  projetos projetos @relation(fields: [projeto_id], references: [id], onDelete: Cascade) // liga ao projeto
+
+  @@unique([visitante_id, projeto_id])   // espelha o UNIQUE do banco
+  @@index([projeto_id])
+  @@index([visitante_id])
 }
