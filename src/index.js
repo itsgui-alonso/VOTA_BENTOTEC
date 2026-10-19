@@ -11,18 +11,19 @@ import CurtidasRoutes from '../routes/CurtidasRoutes.js'
 import CategoriaRoutes from '../routes/CategoriaRoutes.js'
 import { errorHandler, RotaNaoEncontrada } from "../middlewares/errorHandler.js";
 import { LimiterGlobal, LimiterSession, LimiterVotos, LimiterWebhook, LimiterCurtidas } from "../middlewares/rateLimiter.js";
+
 const app = express();
 app.set('trust proxy', 1)
 const PORT = process.env.PORT || 3000
+
 // Header de segurança nas respostas
 app.use(helmet())
 
-app.use(LimiterGlobal)
-
+// Configuração do CORS 
 const origensPermitidas = (process.env.CORS_ORIGENS || '')
-.split(',') // Spara aonde tem virgula
+.split(',') // Separa aonde tem virgula
 .map((origem) => origem.trim()) // Tira os espaços de cada item
-.filter(Boolean) // Remove ites vazios
+.filter(Boolean) // Remove itens vazios
 
 app.use(cors({
     origin(origin, callback){
@@ -30,14 +31,17 @@ app.use(cors({
         if(!origin) return callback(null, true)
         // A origem está na lista, então deixa passar
         if(origensPermitidas.includes(origin)) return callback(null, true)
-        //Qualquer coisa, sem ser esses dois acima - NAvegador Bloqueia
+        // Qualquer coisa sem ser esses dois acima - Navegador Bloqueia
         return callback(null, false)
     }
 }))
+
 // MIDDLEWARE: Essencial para o Express conseguir ler o JSON enviado no corpo (body)
 // Leitura com limite de tamanho, ideal para o que estamos usando
 app.use(express.json({limit: '10kb'}));
+app.use(LimiterGlobal)
 
+// ROTAS
 app.use('/bentovote/v1/relatorio', RelatorioRoutes)
 app.use('/bentovote/v1/session', LimiterSession, SessionRoutes)
 app.use('/bentovote/v1/votos', LimiterVotos, VotosRoutes)
@@ -46,7 +50,7 @@ app.use('/bentovote/v1/projetos', ProjetoRoutes)
 app.use('/bentovote/v1/categorias', CategoriaRoutes)
 app.use('/bentovote/v1/curtidas', LimiterCurtidas, CurtidasRoutes)
 
-// RotaNaoEncontrada vem depois de todas as rotas. errorHandler vem por último, porque só recebe erros vindos de tudo que está antes dele.
+// RotaNaoEncontrada vem depois de todas as rotas. errorHandler vem por último.
 app.use(RotaNaoEncontrada)
 app.use(errorHandler)
 
