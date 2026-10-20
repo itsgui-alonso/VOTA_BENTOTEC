@@ -39,6 +39,6 @@ export class EventosServices {
             comCache('eventos:agora', TTL_CACHE_AGORA, () => EventosRepository.listarAgora())
         ])
 
-        return { hoje, data: diaEscolhido, dias, agora, eventos }
+        return { hoje, data: diaEscolhido, dias, agora, eventos }  
     }
 }
