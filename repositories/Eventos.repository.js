@@ -36,7 +36,7 @@ export class EventosRepository {
 
     // seria os eventos que estão acontecendo no momento atual!
     static listarAgora(){
-        const aora = new Date()
+        const agora = new Date()
 
         return prisma.eventos.findMany({
             where: { inicio: { lte: agora }, fim: { gt: agora } }, // lte = menor ou igual / gt = maior que
