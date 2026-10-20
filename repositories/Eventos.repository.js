@@ -7,7 +7,7 @@ const CAMPOS_EVENTO = {
     id: true,
     titulo: true,
     descricao: true,
-    inico: true,
+    inicio: true,
     fim: true,
     local: { select: { id: true, nome: true}} // traz o local junto, já com o nome
 }
