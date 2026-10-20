@@ -94,3 +94,26 @@ model curtidas {
   @@index([projeto_id])
   @@index([visitante_id])
 }
+
+model locais {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome       String    @unique @db.VarChar(60)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  eventos    eventos[] // um local tem vários eventos (lado "1" da relação)
+}
+
+model eventos {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  titulo     String   @db.VarChar(100)
+  descricao  String?  // o "?" significa opcional (pode ser nulo), igual ao SQL
+  local_id   String   @db.Uuid
+  inicio     DateTime @db.Timestamptz(6)
+  fim        DateTime @db.Timestamptz(6)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  // Liga este evento ao seu local: local_id (aqui) aponta para id (em locais)
+  local locais @relation(fields: [local_id], references: [id], onDelete: Restrict)
+
+  @@index([inicio])
+  @@index([local_id])
+}
