@@ -9,6 +9,7 @@ import WebhookRoutes from '../routes/WebhookRoutes.js'
 import ProjetoRoutes from '../routes/ProjetoRoutes.js'
 import CurtidasRoutes from '../routes/CurtidasRoutes.js'
 import CategoriaRoutes from '../routes/CategoriaRoutes.js'
+import EventosRoutes from '../routes/EventosRoutes.js'
 import { errorHandler, RotaNaoEncontrada } from "../middlewares/errorHandler.js";
 import { LimiterGlobal, LimiterSession, LimiterVotos, LimiterWebhook, LimiterCurtidas } from "../middlewares/rateLimiter.js";
 
@@ -49,6 +50,7 @@ app.use('/bentovote/v1/webhook', LimiterWebhook, WebhookRoutes)
 app.use('/bentovote/v1/projetos', ProjetoRoutes)
 app.use('/bentovote/v1/categorias', CategoriaRoutes)
 app.use('/bentovote/v1/curtidas', LimiterCurtidas, CurtidasRoutes)
+app.use('/bentovote/v1/eventos', EventosRoutes)
 
 // RotaNaoEncontrada vem depois de todas as rotas. errorHandler vem por último.
 app.use(RotaNaoEncontrada)
