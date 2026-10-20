@@ -20,22 +20,25 @@ const PORT = process.env.PORT || 3000
 // Header de segurança nas respostas
 app.use(helmet())
 
-// Configuração do CORS 
 const origensPermitidas = (process.env.CORS_ORIGENS || '')
-.split(',') // Separa aonde tem virgula
-.map((origem) => origem.trim()) // Tira os espaços de cada item
-.filter(Boolean) // Remove itens vazios
+    .split(',')
+    .map(origem => origem.trim())
+    .filter(Boolean);
 
 app.use(cors({
-    origin(origin, callback){
-        // Sem header Origin (webhook, Postman, curl): não é navegador, deixa passar
-        if(!origin) return callback(null, true)
-        // A origem está na lista, então deixa passar
-        if(origensPermitidas.includes(origin)) return callback(null, true)
-        // Qualquer coisa sem ser esses dois acima - Navegador Bloqueia
-        return callback(null, false)
+    origin(origem, callback) {
+        // Permite requisições sem Origin
+        if (!origem) return callback(null, true);
+
+        // Permite origens cadastradas
+        if (origensPermitidas.includes(origem)) {
+            return callback(null, true);
+        }
+
+        // Bloqueia outras origens
+        return callback(new Error('Origem não permitida pelo CORS'));
     }
-}))
+}));
 
 // MIDDLEWARE: Essencial para o Express conseguir ler o JSON enviado no corpo (body)
 // Leitura com limite de tamanho, ideal para o que estamos usando
