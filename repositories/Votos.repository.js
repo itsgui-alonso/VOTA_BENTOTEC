@@ -101,6 +101,11 @@ export class VotosRepository{
         }))
     }
     
+    static async buscarVotoUserProjeto(userId, projectId){
+        return prisma.vote.findUnique({
+            where: { userId_projectId: { userId, projectId } }
+        })
+    }
 }
 
     
