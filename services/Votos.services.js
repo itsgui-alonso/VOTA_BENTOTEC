@@ -4,12 +4,14 @@ import { ProjetoRepository } from "../repositories/Projeto.repository.js"
 import { SessionRepository } from "../repositories/Session.repository.js"
 import { AppError } from "../models/errors/AppError.js"
 import redis from "../database/redis.js"
+import { VotacaoService } from "./Votacao.services.js"
 
 export const LIMITE_VOTOS_CATEGORIA = 3 // <- era 1
 
 export class VotosService{
 
     static async votarProjeto(token, projectId){
+        await VotacaoService.garantirAberta() // <- NOVO: primeira linha
         const session = await SessionRepository.buscarSession(token, null)
 
         if(!session){
@@ -75,6 +77,7 @@ export class VotosService{
     }
 
     static async consultarVotosRestantes(token, projectId) {
+        await VotacaoService.garantirAberta() // <- NOVO: primeira linha
         const session = await SessionRepository.buscarSession(token, null)
         if(!session){
             throw new AppError('Sessão inválida ou expirada! Escaneie novamente', 401)
